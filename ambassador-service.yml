@@ -8,6 +8,13 @@ metadata:
     getambassador.io/config: |
       ---
       apiVersion: ambassador/v0
+      kind: AuthService
+      name: authentication
+      auth_service: "ambassador-auth:80"
+      path_prefix: "/extauth"
+      allowed_headers: []
+      ---
+      apiVersion: ambassador/v0
       kind:  Mapping
       name:  shopfront_stable
       prefix: /shopfront/
