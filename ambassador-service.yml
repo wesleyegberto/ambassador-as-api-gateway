@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: ambassador
+  name: ambassador
+  annotations:
+    getambassador.io/config: |
+      ---
+      apiVersion: ambassador/v0
+      kind:  Mapping
+      name:  shopfront_stable
+      prefix: /shopfront/
+      service: shopfront:8010
+      ---
+      apiVersion: ambassador/v0
+      kind:  Mapping
+      name:  httpbin_mapping
+      prefix: /httpbin/
+      service: httpbin.org:80
+      host_rewrite: httpbin.org
+spec:
+  type: LoadBalancer
+  ports:
+  - name: ambassador
+    port: 9090
+    targetPort: 80
+  selector:
+    service: ambassador
