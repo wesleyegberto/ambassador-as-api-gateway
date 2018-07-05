@@ -2,6 +2,23 @@
 
 This is a resume from a bunch of links (see Links and References section to see the sources).
 
+## From Ambassador's [GitHub](https://github.com/datawire/ambassador)
+
+Ambassador is an open source Kubernetes-native API Gateway built on Envoy, designed for microservices. Ambassador essentially serves as an Envoy ingress controller, but with many more features.
+
+Key features include:
+* Self-service configuration, via Kubernetes annotations
+* First class gRPC and HTTP/2 support
+* Support for CORS, timeouts, weighted round robin (canary), rate limiting
+* Istio integration
+* Authentication
+* Robust TLS support, including TLS client-certificate authentication
+
+
+### Architecture
+Ambassador deploys the Envoy Proxy for L7 traffic management. Configuration of Ambassador is via Kubernetes annotations. Ambassador relies on Kubernetes for scaling and resilience. For more on Ambassador's architecture and motivation, read this blog post.
+
+
 ## PreFly:
 
 ### Minikube
@@ -69,6 +86,9 @@ Notes about the YML:
 * **prefix: /shopfront/**: is the external prefix of the URI that you want to route internally
 * **service: shopfront:8010**: is the Kubernetes service (and port) you want to route to
 
+When the service is deployed, Ambassador will notice the `getambassador.io/config` annotation on the service, and use the Mapping contained in it to configure the route. (There's no restriction on what kinds of Ambassador configuration can go into the annotation, but it's important to note that Ambassador only looks at annotations on Kubernetes Services).
+
+Note: we could you a ConfigMap to define the routes but Ambassador only read it at startup and use it as baseline, so after an update ConfigMap we must restart the Ambassador to it read again. Thus is recommended to use Service annotation to live reload when it detect changes and also we can have multiples Services (public IP) with its own routes.
 
 ### Create Ambassador components
 With that we have our mapping but we need to deploy the Ambassador Admin and its containers that will do the heavy work.
@@ -195,6 +215,7 @@ It also can use header to route the request to specific service.
 
 ## Links and References
 
+* https://github.com/datawire/ambassador
 * https://www.envoyproxy.io/docs/envoy/latest/start/distro/ambassador
 * https://www.getambassador.io/user-guide/getting-started
 * https://www.getambassador.io/user-guide/auth-tutorial
