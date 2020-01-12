@@ -46,6 +46,9 @@ When using GCP with RBAC we need to grant `cluster-admin` role privileges, we ca
 To check if the Pods and Services were created:
 * `kubectl get pod,svc`
 
+List services to access using browser:
+* `minikube service list`
+
 
 ## Conventions
 Some conversion in this steps.
